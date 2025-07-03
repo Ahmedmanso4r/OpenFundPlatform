@@ -73,14 +73,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Django_REST.wsgi.application'
 
 
-# Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'crowdfunding_db',
-        'USER': 'abdo_postgres',
+        'USER': 'postgres',
         'PASSWORD': 'abdo',
         'HOST': 'localhost',
         'PORT': '5432',
