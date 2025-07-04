@@ -1,1 +1,12 @@
-__pycache__
+venv/
+env/
+
+*.sqlite3
+
+*.pyc
+__pycache__/
+
+.env
+
+frontend/node_modules/
+
