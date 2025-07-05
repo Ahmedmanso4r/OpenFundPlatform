@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
+from rest_framework.generics import ListAPIView
 from .models import Project
 from .serializers import ProjectSerializer
 
@@ -13,3 +14,8 @@ class CreateProjectView(APIView):
             serializer.save(owner=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ProjectListView(ListAPIView):
+    queryset = Project.objects.all().order_by('-created_at')
+    serializer_class = ProjectSerializer
+    permission_classes = [permissions.AllowAny]
