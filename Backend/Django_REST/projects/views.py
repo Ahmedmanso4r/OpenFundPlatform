@@ -14,3 +14,26 @@ class CreateProjectView(APIView):
             serializer.save(owner=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+# PUT /api/projects/<id>/  - UPdate project
+class ProjectDetailView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self, pk):
+        try:
+            return Project.objects.get(pk=pk)
+        except Project.DoesNotExist:
+            return None
+
+    def put(self, request, pk):
+        project = self.get_object(pk)
+        if not project:
+            return Response({'error': 'Project not found'}, status=status.HTTP_404_NOT_FOUND)
+        if project.owner != request.user:
+            return Response({'error': 'You do not have permission to update this project.'}, status=status.HTTP_403_FORBIDDEN)
+        serializer = ProjectSerializer(project, data=request.data, partial=False)
+        if serializer.is_valid():
+            serializer.save(owner=request.user) 
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
