@@ -14,8 +14,3 @@ class CreateProjectView(APIView):
             serializer.save(owner=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class ProjectListView(ListAPIView):
-    queryset = Project.objects.all().order_by('-created_at')
-    serializer_class = ProjectSerializer
-    permission_classes = [permissions.AllowAny]
