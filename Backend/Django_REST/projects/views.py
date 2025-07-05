@@ -37,3 +37,11 @@ class ProjectDetailView(APIView):
             serializer.save(owner=request.user) 
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ProjectListView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        projects = Project.objects.all()
+        serializer = ProjectSerializer(projects, many=True) 
+        return Response(serializer.data, status=status.HTTP_200_OK)
