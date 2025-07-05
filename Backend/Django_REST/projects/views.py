@@ -38,6 +38,15 @@ class ProjectDetailView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def delete(self, request, pk):
+        project = self.get_object(pk)
+        if not project:
+            return Response({'error': 'Project not found'}, status=status.HTTP_404_NOT_FOUND)
+        if project.owner != request.user:
+            return Response({'error': 'You do not have permission to delete this project.'}, status=status.HTTP_403_FORBIDDEN)
+        project.delete()
+        return Response({'message': 'Project deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+
 class ProjectListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
