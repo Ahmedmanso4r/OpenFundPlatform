@@ -27,12 +27,10 @@ const Login = () => {
         try {
             const response = await axios.post('http://localhost:8000/api/login/', formData);
 
-            // Store tokens in localStorage
             localStorage.setItem('access_token', response.data.access);
             localStorage.setItem('refresh_token', response.data.refresh);
             localStorage.setItem('user_data', JSON.stringify(response.data.user));
 
-            // Navigate to home page
             navigate('/home', {
                 state: {
                     userData: response.data.user
