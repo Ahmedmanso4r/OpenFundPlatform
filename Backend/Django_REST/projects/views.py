@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status, permissions
 from .models import Project
 from .serializers import ProjectSerializer
+from django.db.models import Q
+from datetime import datetime
 
 def get_object(pk):
     try:
@@ -50,3 +52,32 @@ def project_list(request):
     projects = Project.objects.all()
     serializer = ProjectSerializer(projects, many=True) 
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def search_projects(request):
+    start_date = request.query_params.get('start')
+    end_date = request.query_params.get('end')
+    
+    if not start_date or not end_date:
+        return Response(
+            {"error": "Both start and end date parameters are required"},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    try:
+        start = datetime.strptime(start_date, '%Y-%m-%d').date()
+        end = datetime.strptime(end_date, '%Y-%m-%d').date()
+        
+        projects = Project.objects.filter(
+            Q(start_date__lte=end, end_date__gte=start)  
+        )
+        
+        serializer = ProjectSerializer(projects, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
+    except ValueError:
+        return Response(
+            {"error": "Invalid date format. Use YYYY-MM-DD"},
+            status=status.HTTP_400_BAD_REQUEST
+        )

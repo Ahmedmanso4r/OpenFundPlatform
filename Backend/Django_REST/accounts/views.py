@@ -59,3 +59,9 @@ def login(request):
         return Response({
             'error': f'Login failed: {str(e)}'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['GET'])
+def list_users(request):
+    users = User.objects.all()
+    users_json = RegisterSerializer(users , many=True)
+    return Response(data = users_json.data , status = status.HTTP_200_OK)
