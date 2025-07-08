@@ -10,7 +10,6 @@ const ViewProjects = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Check if user is authenticated
         const accessToken = localStorage.getItem('access_token');
         if (!accessToken) {
             setIsAuthenticated(false);
@@ -18,7 +17,6 @@ const ViewProjects = () => {
         }
         setIsAuthenticated(true);
 
-        // Fetch projects from backend
         const fetchProjects = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/projects/projects/', {
@@ -70,7 +68,6 @@ const ViewProjects = () => {
         }).format(amount);
     };
 
-    // If not authenticated, show login prompt
     if (!isAuthenticated) {
         return (
             <div className="container-fluid min-vh-100 d-flex align-items-center justify-content-center"
@@ -114,7 +111,6 @@ const ViewProjects = () => {
             }}>
             <div className="row justify-content-center">
                 <div className="col-12 col-lg-10">
-                    {/* Header */}
                     <div className="card shadow-lg border-0 mb-4">
                         <div className="card-body p-4">
                             <div className="d-flex justify-content-between align-items-center">
@@ -145,7 +141,6 @@ const ViewProjects = () => {
                         </div>
                     </div>
 
-                    {/* Error Message */}
                     {error && (
                         <div className="alert alert-danger alert-dismissible fade show border-0 shadow-sm mb-4" role="alert"
                             style={{ background: 'linear-gradient(135deg, #fee 0%, #fcc 100%)' }}>
@@ -162,7 +157,6 @@ const ViewProjects = () => {
                         </div>
                     )}
 
-                    {/* Loading State */}
                     {loading && (
                         <div className="card shadow-lg border-0">
                             <div className="card-body p-5 text-center">
@@ -175,7 +169,6 @@ const ViewProjects = () => {
                         </div>
                     )}
 
-                    {/* Projects Grid */}
                     {!loading && !error && (
                         <>
                             {projects.length === 0 ? (
