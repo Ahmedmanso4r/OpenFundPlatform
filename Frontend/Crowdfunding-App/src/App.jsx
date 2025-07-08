@@ -5,6 +5,7 @@ import Home from './components/Home';
 import ViewProjects from './components/ViewProjects';
 import EditProject from './components/EditProject';
 import './App.css';
+import CreateProject from './pages/CreateProject';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/create-project" element={<CreateProject />} />
           <Route path="/view-projects" element={<ViewProjects/>} />
           <Route path="/edit/:projectId" element={<EditProject />} />
         </Routes>
