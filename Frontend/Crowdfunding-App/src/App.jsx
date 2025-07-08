@@ -3,6 +3,7 @@ import Register from './components/Register';
 import Login from './components/Login';
 import Home from './components/Home';
 import ViewProjects from './components/ViewProjects';
+import EditProject from './components/EditProject';
 import './App.css';
 import CreateProject from './pages/CreateProject';
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/create-project" element={<CreateProject />} />
           <Route path="/view-projects" element={<ViewProjects/>} />
+          <Route path="/edit/:projectId" element={<EditProject />} />
         </Routes>
       </div>
     </Router>
