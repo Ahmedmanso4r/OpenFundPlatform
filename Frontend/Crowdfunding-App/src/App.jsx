@@ -3,6 +3,7 @@ import Register from './components/Register';
 import Login from './components/Login';
 import Home from './components/Home';
 import './App.css';
+import CreateProject from './pages/CreateProject';
 
 function App() {
   return (
@@ -13,6 +14,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/create-project" element={<CreateProject />} />
+
         </Routes>
       </div>
     </Router>
