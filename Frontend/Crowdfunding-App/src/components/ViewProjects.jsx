@@ -258,6 +258,15 @@ const ViewProjects = () => {
                                                             Created: {formatDate(project.created_at)}
                                                         </small>
                                                     </div>
+                                                    <div className="text-center mt-3">
+                                                        <button
+                                                            className="btn btn-warning btn-sm"
+                                                            onClick={() => navigate(`/edit/${project.id}`)}
+                                                        >
+                                                            <i className="fas fa-edit me-1"></i>
+                                                            Edit
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
