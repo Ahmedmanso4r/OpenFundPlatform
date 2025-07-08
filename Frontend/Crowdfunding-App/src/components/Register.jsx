@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -11,11 +11,19 @@ const Register = () => {
         phone_number: '',
         password: '',
         confirm_password: ''
+
     });
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+
+    useEffect(() => {
+        const token = localStorage.getItem('access_token');
+        if (token) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        }
+    }, []);
 
     const handleChange = (e) => {
         setFormData({
@@ -31,7 +39,13 @@ const Register = () => {
         setSuccess('');
 
         try {
-            await axios.post('http://localhost:8000/api/register/', formData);
+            const response = await axios.post('http://localhost:8000/api/register/', formData);
+
+            localStorage.setItem('access_token', response.data.access);
+            localStorage.setItem('refresh_token', response.data.refresh);
+
+            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
+
             navigate('/home', {
                 state: {
                     userData: {
