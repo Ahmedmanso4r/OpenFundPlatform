@@ -7,6 +7,7 @@ const ViewProjects = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [currentUser, setCurrentUser] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -40,6 +41,12 @@ const ViewProjects = () => {
         };
 
         fetchProjects();
+        const storedUserData = localStorage.getItem('user_data');
+        if (storedUserData) {
+            try {
+                setCurrentUser(JSON.parse(storedUserData));
+            } catch {}
+        }
     }, []);
 
     const handleBackToHome = () => {
@@ -252,13 +259,15 @@ const ViewProjects = () => {
                                                         </small>
                                                     </div>
                                                     <div className="text-center mt-3">
-                                                        <button
-                                                            className="btn btn-warning btn-sm"
-                                                            onClick={() => navigate(`/edit/${project.id}`)}
-                                                        >
-                                                            <i className="fas fa-edit me-1"></i>
-                                                            Edit
-                                                        </button>
+                                                        {currentUser && project.owner === currentUser.username && (
+                                                            <button
+                                                                className="btn btn-warning btn-sm"
+                                                                onClick={() => navigate(`/edit/${project.id}`)}
+                                                            >
+                                                                <i className="fas fa-edit me-1"></i>
+                                                                Edit
+                                                            </button>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div>
