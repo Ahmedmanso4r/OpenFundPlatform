@@ -12,7 +12,10 @@ def register(request):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
+            refresh = RefreshToken.for_user(user)
             return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
                 'message': 'User registered successfully',
                 'user': {
                     'email': user.email,
