@@ -81,3 +81,12 @@ def search_projects(request):
             {"error": "Invalid date format. Use YYYY-MM-DD"},
             status=status.HTTP_400_BAD_REQUEST
         )
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def project_detail(request, pk):
+    project = get_object(pk)
+    if not project:
+        return Response({'error': 'Project not found'}, status=status.HTTP_404_NOT_FOUND)
+    serializer = ProjectSerializer(project)
+    return Response(serializer.data, status=status.HTTP_200_OK)
