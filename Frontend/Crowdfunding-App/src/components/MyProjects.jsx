@@ -42,6 +42,24 @@ const MyProjects = () => {
         fetchProjects();
     }, []);
 
+ const handleDelete = async (projectId) => {
+        const accessToken = localStorage.getItem('access_token');
+        if (!window.confirm("Are you sure you want to delete this project?")) return;
+
+        try {
+            await axios.delete(`http://localhost:8000/api/projects/${projectId}/delete/`, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+            // Remove deleted project from state
+            setProjects(prevProjects => prevProjects.filter(p => p.id !== projectId));
+        } catch (error) {
+            alert("Failed to delete project.");
+            console.error("Delete error:", error);
+        }
+    };
+
     if (loading) {
         return <div className="container py-5 text-center"><div className="spinner-border text-primary" role="status"></div></div>;
     }
@@ -69,6 +87,12 @@ const MyProjects = () => {
                                     <h5 className="card-title fw-bold text-dark mb-2">{project.title}</h5>
                                     <p className="card-text text-muted mb-3">{project.description}</p>
                                     <div className="d-flex justify-content-between align-items-center">
+                                        <button className="btn btn-warning btn-sm me-2" onClick={() => navigate(`/edit/${project.id}`)}>
+                                            <i className="fas fa-edit me-1"></i> Edit
+                                        </button>
+                                        <button className="btn btn-danger btn-sm" onClick={() => handleDelete(project.id)}>
+                                            <i className="fas fa-trash-alt me-1"></i> Delete
+                                        </button>
                                         <button className="btn btn-warning btn-sm" onClick={() => navigate(`/edit/${project.id}`)}>
                                             <i className="fas fa-edit me-1"></i> Edit
                                         </button>
