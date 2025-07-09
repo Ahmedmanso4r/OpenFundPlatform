@@ -6,6 +6,7 @@ import ViewProjects from './components/ViewProjects';
 import EditProject from './components/EditProject';
 import './App.css';
 import CreateProject from './pages/CreateProject';
+import MyProjects from './components/MyProjects';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/create-project" element={<CreateProject />} />
           <Route path="/view-projects" element={<ViewProjects/>} />
           <Route path="/edit/:projectId" element={<EditProject />} />
+          <Route path="/my-projects" element={<MyProjects />} />
         </Routes>
       </div>
     </Router>
