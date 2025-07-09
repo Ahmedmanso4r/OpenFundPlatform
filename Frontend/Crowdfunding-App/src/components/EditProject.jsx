@@ -15,8 +15,19 @@ const EditProject = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [isOwner, setIsOwner] = useState(false);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [project, setProject] = useState(null);
 
     useEffect(() => {
+        const storedUserData = localStorage.getItem('user_data');
+        if (storedUserData) {
+            try {
+                setCurrentUser(JSON.parse(storedUserData));
+            } catch {
+                setCurrentUser(null);
+            }
+        }
         const fetchProject = async () => {
             const accessToken = localStorage.getItem('access_token');
             try {
@@ -30,7 +41,9 @@ const EditProject = () => {
                     start_date: res.data.start_date || '',
                     end_date: res.data.end_date || ''
                 });
+                setProject(res.data);
             } catch (err) {
+                console.error("Fetch project error:", err, err?.response);
                 setError('Failed to load project data.');
             } finally {
                 setLoading(false);
@@ -38,6 +51,16 @@ const EditProject = () => {
         };
         fetchProject();
     }, [projectId]);
+
+    useEffect(() => {
+        if (project && currentUser) {
+            if (Number(project.owner) === Number(currentUser.id)) {
+                setIsOwner(true);
+            } else {
+                setIsOwner(false);
+            }
+        }
+    }, [project, currentUser]);
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -49,18 +72,37 @@ const EditProject = () => {
         setSuccess('');
         const accessToken = localStorage.getItem('access_token');
         try {
-            await axios.put(`http://localhost:8000/api/projects/projects/${projectId}/`, form, {
+            await axios.put(`http://localhost:8000/api/projects/${projectId}/`, form, {
                 headers: { 'Authorization': `Bearer ${accessToken}` }
             });
             setSuccess('Project updated successfully!');
             setTimeout(() => navigate('/view-projects'), 1200);
         } catch (err) {
+            console.error("Update project error:", err, err?.response);
             setError('Failed to update project.');
         }
     };
 
     if (loading) {
         return <div className="container py-5 text-center"><div className="spinner-border text-primary" role="status"></div></div>;
+    }
+
+    if (error) {
+        return (
+            <div className="container py-5 text-center">
+                <div className="alert alert-danger">{error}</div>
+                <button className="btn btn-primary mt-3" onClick={() => navigate('/view-projects')}>Back to Projects</button>
+            </div>
+        );
+    }
+
+    if (!isOwner) {
+        return (
+            <div className="container py-5 text-center">
+                <div className="alert alert-danger">You are not authorized to edit this project.</div>
+                <button className="btn btn-primary mt-3" onClick={() => navigate('/view-projects')}>Back to Projects</button>
+            </div>
+        );
     }
 
     return (

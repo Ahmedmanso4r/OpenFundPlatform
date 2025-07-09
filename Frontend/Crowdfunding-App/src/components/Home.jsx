@@ -33,8 +33,8 @@ const Home = () => {
         navigate('/view-projects');
     };
 
-    const handleEditProject = () => {
-        navigate('/edit-project');
+    const handleMyProjects = () => {
+        navigate('/my-projects');
     };
 
     const handleLogout = () => {
@@ -157,7 +157,7 @@ const Home = () => {
                         <div className="col-md-4">
                             <button
                                 className="btn btn-warning btn-lg w-100 h-100 d-flex flex-column align-items-center justify-content-center p-4 shadow-sm text-white"
-                                onClick={handleEditProject}
+                                onClick={handleMyProjects}
                                 style={{
                                     background: 'linear-gradient(135deg, #ffc107 0%, #fd7e14 100%)',
                                     border: 'none',
@@ -165,7 +165,7 @@ const Home = () => {
                                 }}
                             >
                                 <i className="fas fa-edit mb-2" style={{ fontSize: 32 }}></i>
-                                <span className="fw-semibold">Edit Project</span>
+                                <span className="fw-semibold">Edit My Projects</span>
                             </button>
                         </div>
                     </div>

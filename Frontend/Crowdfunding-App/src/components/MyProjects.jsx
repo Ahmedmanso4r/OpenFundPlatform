@@ -42,7 +42,7 @@ const MyProjects = () => {
         fetchProjects();
     }, []);
 
-    const handleDelete = async (projectId) => {
+ const handleDelete = async (projectId) => {
         const accessToken = localStorage.getItem('access_token');
         if (!window.confirm("Are you sure you want to delete this project?")) return;
 
@@ -93,6 +93,9 @@ const MyProjects = () => {
                                         <button className="btn btn-danger btn-sm" onClick={() => handleDelete(project.id)}>
                                             <i className="fas fa-trash-alt me-1"></i> Delete
                                         </button>
+                                        <button className="btn btn-warning btn-sm" onClick={() => navigate(`/edit/${project.id}`)}>
+                                            <i className="fas fa-edit me-1"></i> Edit
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -107,4 +110,4 @@ const MyProjects = () => {
     );
 };
 
-export default MyProjects;
+export default MyProjects; 
