@@ -76,7 +76,7 @@ const EditProject = () => {
                 headers: { 'Authorization': `Bearer ${accessToken}` }
             });
             setSuccess('Project updated successfully!');
-            setTimeout(() => navigate('/view-projects'), 1200);
+            setTimeout(() => navigate('/my-projects'), 1200);
         } catch (err) {
             console.error("Update project error:", err, err?.response);
             setError('Failed to update project.');
@@ -136,7 +136,7 @@ const EditProject = () => {
                                     <input type="date" className="form-control" name="end_date" value={form.end_date} onChange={handleChange} required />
                                 </div>
                                 <div className="d-flex justify-content-between">
-                                    <button type="button" className="btn btn-secondary" onClick={() => navigate('/view-projects')}>Cancel</button>
+                                    <button type="button" className="btn btn-secondary" onClick={() => navigate('/my-projects')}>Cancel</button>
                                     <button type="submit" className="btn btn-primary">Save Changes</button>
                                 </div>
                             </form>
